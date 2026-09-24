@@ -13,32 +13,94 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id           String        @id @default(uuid())
-  name         String
-  price        Decimal       @db.Decimal(10, 2)
-  stock        Int
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  saleProducts SaleProduct[]
+enum StatusOrdemServico {
+  ABERTA
+  EM_ANDAMENTO
+  AGUARDANDO_PECA
+  FINALIZADA
 }
 
-model Sale {
-  id           String        @id @default(uuid())
-  date         DateTime
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  saleProducts SaleProduct[]
+model Cliente {
+  id          String   @id @default(uuid())
+  nome        String
+  telefone    String
+  cpf         String?
+  rua         String
+  bairro      String
+  numero      String
+  cidade      String
+  complemento String?
+  observacao  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  motos       Moto[] //Lado muitos da relação entre cliente e moto
+  // Um Cliente pode estar relacionado a várias Motos.
 }
 
-model SaleProduct {
-  id        String   @id @default(uuid())
-  saleId    String
-  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  unitPrice Decimal  @db.Decimal(10, 2)
-  quantity  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Moto {
+  id            String         @id @default(uuid())
+  clienteId     String
+  modelo        String
+  placa         String         @unique
+  chassi        String         @unique
+  cor           String
+  ano           Int?
+  cilindrada    Int?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  cliente       Cliente        @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  // Cada Moto pertence a um único Cliente.
+  // clienteId é a FK que referencia Cliente.id.
+  ordensServico OrdemServico[]
+}
+
+model OrdemServico {
+  id              String             @id @default(uuid())
+  motoId          String
+  problema        String
+  status          StatusOrdemServico @default(ABERTA)
+  dataAbertura    DateTime           @default(now())
+  observacao      String?
+  dataFinalizacao DateTime?
+  moto            Moto               @relation(fields: [motoId], references: [id], onDelete: Cascade)
+  servicos        ServicoOrdem[]
+  pecas           PecaOrdem[]
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+}
+
+model ServicoOrdem {
+  id             String       @id @default(uuid())
+  ordemServicoId String
+  servico        String
+  valor          Decimal      @db.Decimal(10, 2)
+  observacao     String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ordemServico   OrdemServico @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
+}
+
+model PecaOrdem {
+  id             String       @id @default(uuid())
+  ordemServicoId String
+  pecaId         String
+  quantidade     Int
+  valorUnitario  Decimal      @db.Decimal(10, 2)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  ordemServico   OrdemServico @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
+  peca           Peca         @relation(fields: [pecaId], references: [id])
+}
+
+model Peca {
+  id                String      @id @default(uuid())
+  nome              String
+  codigo            String?
+  valorCusto        Decimal?    @db.Decimal(10, 2)
+  valorVenda        Decimal     @db.Decimal(10, 2)
+  quantidadeEstoque Int         @default(0)
+  estoqueMinimo     Int         @default(0)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  pecasOrdens       PecaOrdem[]
 }

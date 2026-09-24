@@ -17,12 +17,16 @@ const Sidebar = () => {
 
         <SidebarButton href="/products">
           <PackageIcon size={20} />
-          Produtos
+          Clientes
         </SidebarButton>
 
         <SidebarButton href="/sales">
           <ShoppingBasketIcon size={20} />
-          Vendas
+          Motos
+        </SidebarButton>
+        <SidebarButton href="/sales">
+          <ShoppingBasketIcon size={20} />
+          Abri O.S
         </SidebarButton>
       </div>
     </div>
