@@ -1,20 +1,27 @@
 import "server-only";
 
 import { db } from "@/app/_lib/prisma";
-import { Product } from "@prisma/client";
+import { Peca } from "@prisma/client";
 
 export type ProductStatusDto = "IN_STOCK" | "OUT_OF_STOCK";
 
-export interface ProductDto extends Omit<Product, "price"> {
+export interface ProductDto
+  extends Pick<Peca, "id" | "createdAt" | "updatedAt"> {
+  name: string;
   price: number;
+  stock: number;
   status: ProductStatusDto;
 }
 
 export const getProducts = async (): Promise<ProductDto[]> => {
-  const products = await db.product.findMany({});
-  return products.map((product) => ({
-    ...product,
-    price: Number(product.price),
-    status: product.stock > 0 ? "IN_STOCK" : "OUT_OF_STOCK",
+  const pecas = await db.peca.findMany({});
+  return pecas.map((peca) => ({
+    id: peca.id,
+    name: peca.nome,
+    price: Number(peca.valorVenda),
+    stock: peca.quantidadeEstoque,
+    createdAt: peca.createdAt,
+    updatedAt: peca.updatedAt,
+    status: peca.quantidadeEstoque > 0 ? "IN_STOCK" : "OUT_OF_STOCK",
   }));
 };

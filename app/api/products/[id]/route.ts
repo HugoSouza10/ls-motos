@@ -9,7 +9,7 @@ export async function GET(
   const query = searchParams.get("teste");
   console.log({ query });
   const prouctId = params.id;
-  const product = await db.product.findUnique({
+  const product = await db.peca.findUnique({
     where: {
       id: prouctId,
     },
@@ -24,7 +24,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { id: string } },
 ) {
-  await db.product.delete({
+  await db.peca.delete({
     where: {
       id: params.id,
     },

@@ -7,12 +7,19 @@ import { actionClient } from "@/app/_lib/safe-action";
 
 export const upsertProduct = actionClient
   .schema(upsertProductSchema)
-  .action(async ({ parsedInput: { id, ...data } }) => {
-    upsertProductSchema.parse(data);
-    await db.product.upsert({
+  .action(async ({ parsedInput: { id, name, price, stock } }) => {
+    await db.peca.upsert({
       where: { id: id ?? "" },
-      update: data,
-      create: data,
+      update: {
+        nome: name,
+        valorVenda: price,
+        quantidadeEstoque: stock,
+      },
+      create: {
+        nome: name,
+        valorVenda: price,
+        quantidadeEstoque: stock,
+      },
     });
     revalidatePath("/products", "page");
     revalidatePath("/");

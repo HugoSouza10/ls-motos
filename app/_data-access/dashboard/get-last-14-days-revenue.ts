@@ -1,5 +1,3 @@
-import { db } from "@/app/_lib/prisma";
-import { Decimal } from "@prisma/client/runtime/library";
 import dayjs from "dayjs";
 import "server-only";
 
@@ -16,24 +14,11 @@ export const getLast14DaysRevenue = async (): Promise<DayTotalRevenueDto[]> => {
       return dayjs(today).subtract(day, "day");
     },
   );
-  const totalLast14DaysRevenue: DayTotalRevenueDto[] = [];
-  for (const day of last14Days) {
-    const dayTotalRevenue = await db.$queryRawUnsafe<
-      { totalRevenue: Decimal }[]
-    >(
-      `
-      SELECT SUM("SaleProduct"."unitPrice" * "SaleProduct"."quantity") as "totalRevenue"
-      FROM "SaleProduct"
-      JOIN "Sale" ON "SaleProduct"."saleId" = "Sale"."id"
-      WHERE "Sale"."date" >= $1 AND "Sale"."date" <= $2;
-      `,
-      day.startOf("day").toDate(),
-      day.endOf("day").toDate(),
-    );
-    totalLast14DaysRevenue.push({
+  // TODO: o schema atual não define venda nem uma regra de receita.
+  return last14Days.map((day) => {
+    return {
       day: day.format("DD/MM"),
-      totalRevenue: Number(dayTotalRevenue[0].totalRevenue),
-    });
-  }
-  return totalLast14DaysRevenue;
+      totalRevenue: 0,
+    };
+  });
 };

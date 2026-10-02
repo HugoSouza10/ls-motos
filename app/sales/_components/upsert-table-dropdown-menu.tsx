@@ -7,11 +7,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/app/_components/ui/dropdown-menu";
-import { Product } from "@prisma/client";
+import { Peca } from "@prisma/client";
 import { MoreHorizontalIcon, ClipboardCopyIcon, TrashIcon } from "lucide-react";
 
 interface UpsertSaleTableDropdownMenuProps {
-  product: Pick<Product, "id">;
+  product: Pick<Peca, "id">;
   onDelete: (productId: string) => void;
 }
 
