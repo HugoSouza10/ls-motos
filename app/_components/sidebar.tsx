@@ -6,7 +6,7 @@ const Sidebar = () => {
     <div className="w-64 bg-white">
       {/* IMAGEM */}
       <div className="px-8 py-6">
-        <h1 className="text-2xl font-bold">STOCKLY</h1>
+        <h1 className="text-2xl font-bold">LS MOTOS</h1>
       </div>
       {/* BOTÕES */}
       <div className="flex flex-col gap-2 p-2">
@@ -15,7 +15,7 @@ const Sidebar = () => {
           Dashboard
         </SidebarButton>
 
-        <SidebarButton href="/products">
+        <SidebarButton href="/clientes">
           <PackageIcon size={20} />
           Clientes
         </SidebarButton>
