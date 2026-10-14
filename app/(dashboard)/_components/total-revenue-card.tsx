@@ -6,7 +6,7 @@ import {
   SummaryCardValue,
 } from "./summary-card";
 import { DollarSign } from "lucide-react";
-import { formatCurrency } from "@/app/_helpers/currency";
+// import { formatCurrency } from "@/app/_helpers/currency";
 
 const TotalRevenueCard = async () => {
   const totalRevenue = await getTotalRevenue();
@@ -16,7 +16,7 @@ const TotalRevenueCard = async () => {
         <DollarSign />
       </SummaryCardIcon>
       <SummaryCardTitle>Receita Total</SummaryCardTitle>
-      <SummaryCardValue>{formatCurrency(totalRevenue)}</SummaryCardValue>
+      <SummaryCardValue>340</SummaryCardValue>
     </SummaryCard>
   );
 };
