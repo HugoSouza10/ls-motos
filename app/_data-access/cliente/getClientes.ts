@@ -2,14 +2,22 @@ import "server-only";
 import { db } from "@/app/_lib/prisma";
 import { Cliente } from "@prisma/client";
 
-
 // Criamos um pick para pegar apenas os campos que queremos do cliente,
-//  e adicionamos o campo quantidadeMotos que é a quantidade de motos que o 
+//  e adicionamos o campo quantidadeMotos que é a quantidade de motos que o
 // cliente possui
 export interface ClientDto
   extends Pick<
     Cliente,
-    "id" | "nome" | "telefone" | "cpf" | "cidade" | "bairro"
+    | "id"
+    | "nome"
+    | "telefone"
+    | "cpf"
+    | "rua"
+    | "bairro"
+    | "numero"
+    | "cidade"
+    | "complemento"
+    | "observacao"
   > {
   quantidadeMotos: number;
 }
@@ -33,6 +41,10 @@ export const getClientes = async (): Promise<ClientDto[]> => {
     cpf: cliente.cpf,
     cidade: cliente.cidade,
     bairro: cliente.bairro,
+    numero: cliente.numero,
+    rua: cliente.rua,
+    complemento: cliente.complemento,
+    observacao: cliente.observacao,
     quantidadeMotos: cliente._count.motos,
   }));
 };
