@@ -19,17 +19,15 @@ import {
   TrashIcon,
 } from "lucide-react";
 import { useState } from "react";
-import DeleteProductDialogContent from "./delete-dialog-content";
 import UpsertClientDialogContent from "./upsert-dialog-content";
-import { ProductDto } from "@/app/_data-access/product/get-products";
+import { ClientDto } from "@/app/_data-access/cliente/getClientes";
+import DeleteClientDialogContent from "./delete-dialog-content";
 
-interface ProductTableDropdownMenuProps {
-  product: ProductDto;
+interface ClientTableDropdownMenuProps {
+  client: ClientDto;
 }
 
-const ProductTableDropdownMenu = ({
-  product,
-}: ProductTableDropdownMenuProps) => {
+const ClientTableDropdownMenu = ({ client }: ClientTableDropdownMenuProps) => {
   const [editDialogOpen, setEditDialogIsOpen] = useState(false);
   return (
     <AlertDialog>
@@ -45,7 +43,7 @@ const ProductTableDropdownMenu = ({
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="gap-1.5"
-              onClick={() => navigator.clipboard.writeText(product.id)}
+              onClick={() => navigator.clipboard.writeText(client.id)}
             >
               <ClipboardCopyIcon size={16} />
               Copiar ID
@@ -66,17 +64,23 @@ const ProductTableDropdownMenu = ({
         </DropdownMenu>
         <UpsertClientDialogContent
           defaultValues={{
-            id: product.id,
-            name: product.name,
-            price: Number(product.price),
-            stock: product.stock,
+            id: client.id,
+            nome: client.nome,
+            telefone: client.telefone,
+            cpf: client.cpf ?? "",
+            rua: client.rua,
+            bairro: client.bairro,
+            numero: client.numero,
+            cidade: client.cidade,
+            complemento: client.complemento ?? "",
+            observacao: client.observacao ?? "",
           }}
           setDialogIsOpen={setEditDialogIsOpen}
         />
-        <DeleteProductDialogContent productId={product.id} />
+        <DeleteClientDialogContent clientId={client.id} />
       </Dialog>
     </AlertDialog>
   );
 };
 
-export default ProductTableDropdownMenu;
+export default ClientTableDropdownMenu;

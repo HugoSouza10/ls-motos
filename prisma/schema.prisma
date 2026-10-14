@@ -20,6 +20,10 @@ enum StatusOrdemServico {
   FINALIZADA
 }
 
+// Um cliente pode possuir várias motos.
+// Restrict:
+// se o cliente possuir alguma moto vinculada,
+// ele não poderá ser excluído.
 model Cliente {
   id          String   @id @default(uuid())
   nome        String
@@ -33,10 +37,15 @@ model Cliente {
   observacao  String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  motos       Moto[] //Lado muitos da relação entre cliente e moto
+  motos       Moto[] // Lado muitos da relação entre Cliente e Moto.
   // Um Cliente pode estar relacionado a várias Motos.
 }
 
+// Cada moto pertence a um único cliente.
+// clienteId é a FK que referencia Cliente.id.
+// Restrict:
+// se a moto possuir alguma OrdemServico,
+// ela não poderá ser excluída.
 model Moto {
   id            String         @id @default(uuid())
   clienteId     String
@@ -48,12 +57,17 @@ model Moto {
   cilindrada    Int?
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  cliente       Cliente        @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  cliente       Cliente        @relation(fields: [clienteId], references: [id], onDelete: Restrict)
   // Cada Moto pertence a um único Cliente.
   // clienteId é a FK que referencia Cliente.id.
   ordensServico OrdemServico[]
 }
 
+// Uma OrdemServico pertence a uma Moto
+// e pode possuir vários serviços e peças.
+// Restrict:
+// a Moto não pode ser excluída
+// enquanto existir alguma OS vinculada a ela.
 model OrdemServico {
   id              String             @id @default(uuid())
   motoId          String
@@ -62,13 +76,17 @@ model OrdemServico {
   dataAbertura    DateTime           @default(now())
   observacao      String?
   dataFinalizacao DateTime?
-  moto            Moto               @relation(fields: [motoId], references: [id], onDelete: Cascade)
+  moto            Moto               @relation(fields: [motoId], references: [id], onDelete: Restrict)
   servicos        ServicoOrdem[]
   pecas           PecaOrdem[]
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
 }
 
+// Representa um serviço realizado em uma OS.
+// Cascade:
+// se a OrdemServico for excluída,
+// os serviços vinculados a ela também serão excluídos.
 model ServicoOrdem {
   id             String       @id @default(uuid())
   ordemServicoId String
@@ -80,6 +98,14 @@ model ServicoOrdem {
   ordemServico   OrdemServico @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
 }
 
+// Representa uma peça utilizada em uma OS.
+// Cascade:
+// se a OrdemServico for excluída,
+// o registro PecaOrdem também será excluído.
+//
+// Restrict:
+// se uma peça já estiver vinculada a uma OS,
+// ela não poderá ser excluída do cadastro.
 model PecaOrdem {
   id             String       @id @default(uuid())
   ordemServicoId String
@@ -89,9 +115,11 @@ model PecaOrdem {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   ordemServico   OrdemServico @relation(fields: [ordemServicoId], references: [id], onDelete: Cascade)
-  peca           Peca         @relation(fields: [pecaId], references: [id])
+  peca           Peca         @relation(fields: [pecaId], references: [id], onDelete: Restrict)
 }
 
+// Cadastro das peças utilizadas pela oficina.
+// Uma peça pode estar presente em várias ordens de serviço.
 model Peca {
   id                String      @id @default(uuid())
   nome              String

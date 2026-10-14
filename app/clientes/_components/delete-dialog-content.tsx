@@ -1,4 +1,4 @@
-import { deleteProduct } from "@/app/_actions/client/delete-product";
+import { deleteClient } from "@/app/_actions/client/delete-client";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -11,28 +11,28 @@ import {
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 
-interface DeleteProductDialogContentProps {
-  productId: string;
+interface DeleteClientDialogContentProps {
+  clientId: string;
 }
 
-const DeleteProductDialogContent = ({
-  productId,
-}: DeleteProductDialogContentProps) => {
-  const { execute: executeDeleteProduct } = useAction(deleteProduct, {
+const DeleteClientDialogContent = ({
+  clientId,
+}: DeleteClientDialogContentProps) => {
+  const { execute: executeDeleteClient } = useAction(deleteClient, {
     onSuccess: () => {
-      toast.success("Produto excluído com sucesso.");
+      toast.success("Cliente excluído com sucesso.");
     },
-    onError: () => {
-      toast.error("Ocorreu um erro ao excluir o produto.");
+    onError: ({ error }) => {
+      toast.error(error.serverError ?? "Ocorreu um erro ao excluir o cliente.");
     },
   });
-  const handleContinueClick = () => executeDeleteProduct({ id: productId });
+  const handleContinueClick = () => executeDeleteClient({ id: clientId });
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
         <AlertDialogDescription>
-          Você está prestes a excluir este produto. Esta ação não pode ser
+          Você está prestes a excluir este cliente. Esta ação não pode ser
           desfeita. Deseja continuar?
         </AlertDialogDescription>
       </AlertDialogHeader>
@@ -46,4 +46,4 @@ const DeleteProductDialogContent = ({
   );
 };
 
-export default DeleteProductDialogContent;
+export default DeleteClientDialogContent;

@@ -7,6 +7,7 @@ import ProductStatusBadge from "@/app/_components/product-status-badge";
 import { ClientDto } from "@/app/_data-access/cliente/getClientes";
 import { formatCpf } from "@/app/_helpers/format-cpf";
 import { formatTelefone } from "@/app/_helpers/format-telefone";
+import ClientTableDropdownMenu from "./table-dropdown-menu";
 
 export const productTableColumns: ColumnDef<ClientDto>[] = [
   {
@@ -34,6 +35,6 @@ export const productTableColumns: ColumnDef<ClientDto>[] = [
   {
     accessorKey: "actions",
     header: "Ações",
-    cell: (row) => <ProductTableDropdownMenu product={row.row.original} />,
+    cell: (row) => <ClientTableDropdownMenu client={row.row.original} />,
   },
 ];
