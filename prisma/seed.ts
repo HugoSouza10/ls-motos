@@ -1,8 +1,10 @@
-const {
+import { hash } from "bcryptjs";
+
+import {
   Prisma,
   PrismaClient,
   StatusOrdemServico,
-} = require("@prisma/client");
+} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -274,3 +276,17 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
+const senhaHash = await hash("12345678", 10);
+
+await prisma.usuario.upsert({
+  where: {
+    email: "admin@lsmotos.com",
+  },
+  update: {},
+  create: {
+    nome: "Administrador",
+    email: "admin@lsmotos.com",
+    senhaHash,
+  },
+});
