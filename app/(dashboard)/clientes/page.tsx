@@ -1,14 +1,14 @@
-import { DataTable } from "../_components/ui/data-table";
+import { DataTable } from "../../_components/ui/data-table";
 import { productTableColumns } from "./_components/table-columns";
-import { getProducts } from "../_data-access/product/get-products";
+import { getProducts } from "../../_data-access/product/get-products";
 import AddProductButton from "./_components/create-client-button";
 import Header, {
   HeaderLeft,
   HeaderRight,
   HeaderSubtitle,
   HeaderTitle,
-} from "../_components/header";
-import { getClientes } from "../_data-access/cliente/getClientes";
+} from "../../_components/header";
+import { getClientes } from "../../_data-access/cliente/getClientes";
 
 // Essa página será montada uma vez e reutilizada (SSG), podendo ser incrementada de forma regenerativa (ISR)
 export const dynamic = "force-static";
