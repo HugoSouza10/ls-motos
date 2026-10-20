@@ -1,20 +1,33 @@
 "use client";
-
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Spinner } from "../_components/ui/spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: true,
-    });
-    console.log(result);
+    setIsLoading(true);
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        router.push("/");
+      }
+      console.log(result);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,9 +68,10 @@ const Login = () => {
           <div>
             <button
               type="submit"
+              disabled={isLoading}
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Login
+              {isLoading ? <Spinner /> : "Login"}
             </button>
           </div>
         </form>
@@ -68,8 +82,7 @@ const Login = () => {
 
 export default Login;
 
-
- /*
+/*
 Login page
 → coleta email/senha
 

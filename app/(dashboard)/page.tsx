@@ -1,5 +1,6 @@
 import Header, {
   HeaderLeft,
+  HeaderRight,
   HeaderSubtitle,
   HeaderTitle,
 } from "../_components/header";
@@ -15,10 +16,13 @@ import { Skeleton } from "../_components/ui/skeleton";
 import MostSoldProducts, {
   MostSoldProductsSkeleton,
 } from "./_components/most-sold-products";
+import LogoutButton from "../login/_components/logout-button";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/_lib/auth";
 
 // Essa página será montada do zero a cada acesso (SSR)
 export const dynamic = "force-dynamic";
-
+const session = await getServerSession(authOptions);
 const Home = async () => {
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
@@ -27,6 +31,10 @@ const Home = async () => {
           <HeaderSubtitle>Visão geral dos dados</HeaderSubtitle>
           <HeaderTitle>Dashboard</HeaderTitle>
         </HeaderLeft>
+        <HeaderRight>
+          <span className="text-sm mr-2">{session?.user?.name}</span>
+          <LogoutButton />
+        </HeaderRight>
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
