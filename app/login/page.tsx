@@ -8,6 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,6 +26,7 @@ const Login = () => {
         router.push("/");
       }
       console.log(result);
+      setError("E-mail ou senha incorretos.");
     } finally {
       setIsLoading(false);
     }
@@ -74,6 +76,11 @@ const Login = () => {
               {isLoading ? <Spinner /> : "Login"}
             </button>
           </div>
+          {error && (
+            <p className="text-sm text-red-500">
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>
