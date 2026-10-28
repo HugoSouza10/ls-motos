@@ -47,6 +47,8 @@ O arquivo `app/(dashboard)/layout.tsx` centraliza a proteção desse grupo. Por 
 
 Essa organização evita repetir a consulta da sessão e o redirecionamento em cada página interna que pertence ao grupo.
 
+As rotas autenticadas usam a renderização dinâmica automática do Next.js, acionada pela leitura dos cookies em `getServerSession`, para consultar a sessão da requisição atual. As páginas desse grupo não devem usar `force-static`: essa opção faz `cookies()` e `headers()` retornarem valores vazios, levando `getServerSession` a retornar `null` mesmo para um usuário autenticado. Consultas de sessão também devem ficar dentro do componente assíncrono, como em `app/(dashboard)/page.tsx`, para usar o contexto da requisição atual.
+
 ## Separação entre login e área autenticada
 
 A rota `/login` está fora de `app/(dashboard)`. Por isso, ela não herda o layout autenticado, não depende de uma sessão existente e não exibe a sidebar.

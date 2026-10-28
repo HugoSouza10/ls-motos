@@ -20,10 +20,9 @@ import LogoutButton from "../login/_components/logout-button";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/_lib/auth";
 
-// Essa página será montada do zero a cada acesso (SSR)
-export const dynamic = "force-dynamic";
-const session = await getServerSession(authOptions);
 const Home = async () => {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
       <Header>

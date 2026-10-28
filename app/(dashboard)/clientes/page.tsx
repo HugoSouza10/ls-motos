@@ -10,9 +10,6 @@ import Header, {
 } from "../../_components/header";
 import { getClientes } from "../../_data-access/cliente/getClientes";
 
-// Essa página será montada uma vez e reutilizada (SSG), podendo ser incrementada de forma regenerativa (ISR)
-export const dynamic = "force-static";
-
 const ProductsPage = async () => {
   // const products = await getProducts();
   const clients = await getClientes();
