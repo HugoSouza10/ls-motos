@@ -1,5 +1,6 @@
 import { LayoutGridIcon, PackageIcon, ShoppingBasketIcon } from "lucide-react";
 import SidebarButton from "./sidebar-button";
+import { Button } from "./ui/button";
 
 const Sidebar = () => {
   return (
@@ -20,14 +21,15 @@ const Sidebar = () => {
           Clientes
         </SidebarButton>
 
-        <SidebarButton href="/sales">
+        <SidebarButton href="/motos">
           <ShoppingBasketIcon size={20} />
           Motos
         </SidebarButton>
-        <SidebarButton href="/sales">
+
+        <Button variant="ghost" className="justify-start gap-2" disabled>
           <ShoppingBasketIcon size={20} />
-          Abri O.S
-        </SidebarButton>
+          Abrir O.S
+        </Button>
       </div>
     </div>
   );

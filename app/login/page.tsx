@@ -35,7 +35,7 @@ const Login = () => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
-        <h1 className="mb-6 text-center text-2xl font-bold">Login</h1>
+        <h1 className="mb-6 text-center text-2xl font-bold">LS-Login</h1>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label
@@ -49,7 +49,7 @@ const Login = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="p-2 mt-1 block w-full border-2 border-solid  rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div>
@@ -64,14 +64,14 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              className="mt-1 p-2 block w-full rounded-md border-2 border-solid  shadow-sm focus:border-blue-500 focus:ring-blue-500"
             />
           </div>
           <div>
             <button
               type="submit"
               disabled={isLoading}
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="w-full inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               {isLoading ? <Spinner /> : "Login"}
             </button>
