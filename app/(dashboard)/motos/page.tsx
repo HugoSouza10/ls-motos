@@ -1,3 +1,4 @@
+import { getClientesOptions } from "@/app/_data-access/cliente/get-clientes-options";
 import Header, {
   HeaderLeft,
   HeaderRight,
@@ -10,7 +11,10 @@ import CreateMotoButton from "./_components/create-moto-button";
 import { motoTableColumns } from "./_components/table-columns";
 
 const MotosPage = async () => {
-  const motos = await getMotos();
+  const [motos, clientes] = await Promise.all([
+    getMotos(),
+    getClientesOptions(),
+  ]);
 
   return (
     <div className="m-8 w-full space-y-8 overflow-auto rounded-lg bg-white p-8">
@@ -20,7 +24,7 @@ const MotosPage = async () => {
           <HeaderTitle>Motos</HeaderTitle>
         </HeaderLeft>
         <HeaderRight>
-          <CreateMotoButton />
+          <CreateMotoButton clientes={clientes}/>
         </HeaderRight>
       </Header>
       <DataTable columns={motoTableColumns} data={motos} />

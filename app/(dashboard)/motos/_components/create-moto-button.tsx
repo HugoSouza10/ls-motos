@@ -1,12 +1,32 @@
-import { Button } from "@/app/_components/ui/button";
-import { PlusIcon } from "lucide-react";
+"use client";
 
-const CreateMotoButton = () => {
+import { useState } from "react";
+import { PlusIcon } from "lucide-react";
+import { Button } from "@/app/_components/ui/button";
+import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
+import UpsertMotoDialogContent from "./upsert-moto-dialog-content";
+
+
+interface CreateMotoButtonProps {
+  clientes: {
+    id: string;
+    nome: string;
+  }[];
+}
+
+const CreateMotoButton = ({ clientes }: CreateMotoButtonProps) => {
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+
   return (
-    <Button className="gap-2" disabled>
-      <PlusIcon size={20} />
-      Nova Moto
-    </Button>
+    <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
+      <DialogTrigger>
+        <Button className="gap-2">
+          <PlusIcon size={20} />
+          Nova Moto
+        </Button>
+      </DialogTrigger>
+      <UpsertMotoDialogContent clientes={clientes} />
+    </Dialog>
   );
 };
 
